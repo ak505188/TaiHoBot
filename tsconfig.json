@@ -1,0 +1,13 @@
+{
+     "compilerOptions": {
+          "outDir": "./app",
+          "rootDir": "./src",
+          "lib": [
+               "es2015",
+               "dom"
+          ]
+     },
+     "include": [
+          "src/*"
+     ]
+}
