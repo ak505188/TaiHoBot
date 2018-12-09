@@ -1,22 +1,38 @@
-class Chinchironin {
-  private bet: number;
+import { Player } from './Player';
 
-  constructor(bet: number, autoRoll: boolean = false) {
+export default class Chinchironin {
+  private bet: number;
+  private options = {
+    printRoll: true,
+    commandRoll: false,
+    delayRoll: false
+  };
+  private player1: Player;
+  private player2: Player;
+
+  // Player 1 should be the user
+  // Player 2 should be the bot or user
+
+  constructor(bet: number, player1: Player, player2: Player) {
     this.bet = bet;
+    this.player1 = player1;
+    this.player2 = player2;
   }
 
   public start() {
+    console.log(this.bet);
     console.log(`You won ${this.play()}!`);
   }
 
   // Returns score
-  public doPlayerRolls(playerName?: string): number {
+  public doPlayerRolls(player: Player): number {
     let score: number;
     for (let i = 0; i < 3; i++) {
       const roll: number[] = this.roll();
       score = this.getScore(roll);
-      if (playerName) {
-        console.log(`${playerName} has rolled ${roll}! Score is ${score}.`);
+      if (this.options.printRoll) {
+        console.log(player, player.name, player.getName());
+        this.player1.print(`${player.getName()} has rolled ${roll}! Score is ${score}.`);
       }
       if (score !== 0) {
         return score;
@@ -27,14 +43,14 @@ class Chinchironin {
 
   // Returns how much money the player won/lost
   public play(): number {
-    const TaiHoScore = this.doPlayerRolls('Tai Ho');
+    const TaiHoScore = this.doPlayerRolls(this.player2);
     if (TaiHoScore < 0) {
       return TaiHoScore * -1 * this.bet;
     } else if (TaiHoScore > 6) {
       return TaiHoScore / -10 * this.bet;
     }
 
-    const PlayerScore = this.doPlayerRolls('Player');
+    const PlayerScore = this.doPlayerRolls(this.player1);
 
     if (PlayerScore < 0) {
       return PlayerScore * this.bet;
@@ -87,6 +103,3 @@ class Chinchironin {
     return 0;
   }
 }
-
-const c = new Chinchironin(1000);
-c.start();

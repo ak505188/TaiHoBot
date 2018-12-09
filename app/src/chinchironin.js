@@ -1,31 +1,22 @@
 "use strict";
 exports.__esModule = true;
-var Chinchironin = /** @class */ (function () {
-    // Player 1 should be the user
-    // Player 2 should be the bot or user
-    function Chinchironin(bet, player1, player2) {
-        this.options = {
-            printRoll: true,
-            commandRoll: false,
-            delayRoll: false
-        };
+var Chinchironin = (function () {
+    function Chinchironin(bet, autoRoll) {
+        if (autoRoll === void 0) { autoRoll = false; }
         this.bet = bet;
-        this.player1 = player1;
-        this.player2 = player2;
     }
     Chinchironin.prototype.start = function () {
         console.log(this.bet);
         console.log("You won " + this.play() + "!");
     };
     // Returns score
-    Chinchironin.prototype.doPlayerRolls = function (player) {
+    Chinchironin.prototype.doPlayerRolls = function (playerName) {
         var score;
         for (var i = 0; i < 3; i++) {
             var roll = this.roll();
             score = this.getScore(roll);
-            if (this.options.printRoll) {
-                console.log(player, player.name, player.getName());
-                this.player1.print(player.getName() + " has rolled " + roll + "! Score is " + score + ".");
+            if (playerName) {
+                console.log(playerName + " has rolled " + roll + "! Score is " + score + ".");
             }
             if (score !== 0) {
                 return score;
@@ -35,14 +26,14 @@ var Chinchironin = /** @class */ (function () {
     };
     // Returns how much money the player won/lost
     Chinchironin.prototype.play = function () {
-        var TaiHoScore = this.doPlayerRolls(this.player2);
+        var TaiHoScore = this.doPlayerRolls('Tai Ho');
         if (TaiHoScore < 0) {
             return TaiHoScore * -1 * this.bet;
         }
         else if (TaiHoScore > 6) {
             return TaiHoScore / -10 * this.bet;
         }
-        var PlayerScore = this.doPlayerRolls(this.player1);
+        var PlayerScore = this.doPlayerRolls('Player');
         if (PlayerScore < 0) {
             return PlayerScore * this.bet;
         }

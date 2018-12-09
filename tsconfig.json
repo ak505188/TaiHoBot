@@ -1,13 +1,14 @@
 {
      "compilerOptions": {
           "outDir": "./app",
-          "rootDir": "./src",
+          "moduleResolution": "node",
+          "typeRoots": [
+               "./typings"
+          ],
+          "types": [],
           "lib": [
                "es2015",
                "dom"
           ]
-     },
-     "include": [
-          "src/*"
-     ]
+     }
 }

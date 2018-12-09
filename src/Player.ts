@@ -2,17 +2,39 @@ import Chinchironin from './chinchironin';
 
 export class Player {
   public name: string;
-  public bits: number = 20000;
+  protected bits: number = 20000;
 
-  constructor(name: string) {
+  constructor(name: string, print?: (string) => void) {
     this.name = name;
+    if (print) {
+      this.print = print;
+    }
   }
 
-  public play(bet: number, player?: Player, print?: () => void) {
+  public play(bet: number, player: Player) {
+    if (bet > this.getBits()) {
+      this.print('You do not have enough bits!');
+      return;
+    }
     const game: Chinchironin = new Chinchironin(bet, this, player);
+    const winnings = game.play();
+    this.print(`You won ${winnings}`);
+    this.changeBits(winnings);
   }
 
-  protected changeBits(amount: number) {
+  public getBits(): number {
+    return this.bits;
+  }
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public print(msg: string) {
+    console.log(msg);
+  }
+
+  public changeBits(amount: number) {
     this.bits += amount;
     if (this.bits < 0) {
       this.bits = 0;
@@ -22,12 +44,12 @@ export class Player {
 }
 
 export class TaiHo extends Player {
-  constructor() {
-    super('Tai Ho');
+  constructor(print?: (string) => void) {
+    super('Tai Ho', print);
     this.bits = 999999;
   }
 
-  protected changeBits(amount: number = 0) {
+  public changeBits(amount: number = 0) {
     super.changeBits(0);
   }
 }
